@@ -1,0 +1,17 @@
+// import { xxx } from '../apis/xxx';
+export default {
+  state: {},
+  effects: {
+    * fetch ({ payload }, { call, put }) {
+
+    },
+  },
+  reducers: {
+    setState (state, newState) {
+      return {
+        ...state,
+        ...newState,
+      }
+    },
+  },
+}

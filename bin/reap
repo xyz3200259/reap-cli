@@ -1,17 +1,25 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const chalk = require('chalk');
 const pkg = require('../package.json');
 
 const newCli = require('../lib/new');
+const generateCli = require('../lib/generate');
 
 program.version(pkg.version)
   .option('new', 'new a REAP project.')
   .option('new --no-auto-install', 'new a REAP project.')
+  .option('n', 'new a REAP project.')
+  .option('n --no-auto-install', 'new a REAP project.')
+  .option('generate', 'generate template')
+  .option('g', 'generate template')
   .parse(process.argv);
 
 
 if (program.new || program.n) {
   newCli(process.argv);
+}
+
+if (program.generate || program.g) {
+  generateCli(process.argv);
 }

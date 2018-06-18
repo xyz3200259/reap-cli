@@ -28,6 +28,8 @@
   "devDependencies": {},
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "boilerplate",
+    "docs"
   ]
 }

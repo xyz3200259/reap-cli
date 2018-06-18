@@ -18,3 +18,10 @@ $ npm install reap-cli -g
 $ reap new // will download reap-boilerplate in current directory
 $ reap new --no-auto-install // not auto install npm dependencies
 ```
+
+### Generate New Function / Apis
+
+```bash
+$ cd your application
+$ reap g
+```
