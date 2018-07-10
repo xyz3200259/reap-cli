@@ -1,0 +1,13 @@
+import React from 'react'
+import { Row } from 'antd'
+import List from '../components/<%=metadata.entity.name%>/List'
+
+export default ({
+  context, page, dispatch, effects, showModal,
+}) => {
+  return (
+    <Row>
+      <List context={context} page={page} dispatch={dispatch} showModal={showModal} loading={effects[`${context.code}/search`]} />
+    </Row>
+  )
+}

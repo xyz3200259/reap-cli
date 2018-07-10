@@ -1,0 +1,3 @@
+[<%for(var i=0;i<functions.length;i++){%>
+  { "code": "<%=functions[i].code%>", "name": "<%=functions[i].name%>", "description": "<%=functions[i].description%>" }<%if(i!==functions.length-1){%>,<%}%><%}%>
+]

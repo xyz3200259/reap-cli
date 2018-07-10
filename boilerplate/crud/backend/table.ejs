@@ -1,0 +1,21 @@
+<%
+ function toDBStyle(name) {
+  return name.firstLowerCase().replace(/([A-Z])/g,"_$1").toUpperCase();
+ }
+ const tableName =  toDBStyle(metadata.entity.name)
+ const typeMapping={
+   String: 'VARCHAR(100)',
+   Long: 'BIGINT',
+   Integer: 'BIGINT',
+   Date: 'DATE',
+   Timestamp: 'TIMESTAMP',
+   BigDecimal:  'DECIMAL(20,2)'
+ }
+%>
+DROP TABLE IF EXISTS <%=tableName%>;
+
+CREATE TABLE <%=tableName%>
+(
+  <% for(var i=0;i<metadata.entity.fields.length;i++){%><%=toDBStyle(metadata.entity.fields[i].key)+' '+typeMapping[metadata.entity.fields[i].type] %><% if(metadata.entity.fields[i].primaryKey||metadata.entity.fields[i].required) {%> NOT NULL<%}%><% if(metadata.entity.fields[i].primaryKey) {%> PRIMARY KEY <%}%><% if(metadata.entity.fields.length-1 !== i) {%> ,
+  <%}%><%}%>
+);

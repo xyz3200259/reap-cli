@@ -1,0 +1,7 @@
+package <%=metadata.groupId%>.domain;
+
+import org.springframework.data.mybatis.repository.support.MybatisRepository;
+
+public interface <%=metadata.entity.name.firstUpperCase()%>Repository extends MybatisRepository<<%=metadata.entity.name.firstUpperCase()%>, String> {
+  
+}

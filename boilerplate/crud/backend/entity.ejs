@@ -1,0 +1,28 @@
+package <%=metadata.groupId%>.domain;
+<%if(metadata.entity.fields.find(f=>f.type === 'Date'||f.type==='Timestamp')){%>
+import java.util.Date;<%}%>
+<%if(metadata.entity.fields.find(f=>f.type === 'BigDecimal')){%>
+java.math.BigDecimal;<%}%>
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+<%function transformJavaType(type){return type === 'Timestamp'? 'Date': type}%>
+
+@Entity
+public class <%=metadata.entity.name.firstUpperCase()%> {
+
+<% for(var i=0;i<metadata.entity.fields.length;i++){%><% if(metadata.entity.fields[i].primaryKey) {%>
+  @Id
+	@GeneratedValue<%}%>
+  private <%=metadata.entity.fields[i].type%> <%=metadata.entity.fields[i].key%>;<%}%>
+
+<% for(var i=0;i<metadata.entity.fields.length;i++){%>
+	public <%=transformJavaType(metadata.entity.fields[i].type)%> get<%=metadata.entity.fields[i].key.firstUpperCase()%>() {
+		return <%=metadata.entity.fields[i].key%>;
+	}
+
+	public void set<%=metadata.entity.fields[i].key.firstUpperCase()%>(<%=transformJavaType(metadata.entity.fields[i].type)%> <%=metadata.entity.fields[i].key%>) {
+		this.<%=metadata.entity.fields[i].key%> = <%=metadata.entity.fields[i].key%>;
+	}
+<%}%>
+}

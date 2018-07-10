@@ -1,6 +1,6 @@
 {
   "name": "reap-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The command tool for REAP",
   "bin": {
     "reap": "./bin/reap"
