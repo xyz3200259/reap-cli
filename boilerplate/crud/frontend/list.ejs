@@ -59,18 +59,25 @@ const Component = ({
         <CreateForm context={context} showModal={showModal} dispatch={dispatch} />
       </Row>
       <Row>
-        <Table
-          dataSource={page && page.content}
-          pagination={{
-            total: page && page.totalElements,
-            showTotal: total => `总记录数 ${total} `,
-            onChange: (number, size) => (dispatch({ type: `${context.code}/search`, page: number - 1, size })),
-        }}
-          rowKey={idKey}
-          columns={columns}
-          loading={loading}
-          bordered
-        />
+      <Table
+      dataSource={page && page.content}
+      pagination={{
+        total: page && page.totalElements,
+        showTotal: total => `总记录数 ${total} `,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        onShowSizeChange: (number, size) => (dispatch({
+context, type: `${context.code}/search`, page: number - 1, size,
+})),
+        onChange: (number, size) => (dispatch({
+context, type: `${context.code}/search`, page: number - 1, size,
+})),
+    }}
+      rowKey={idKey}
+      columns={columns}
+      loading={loading}
+      bordered
+    />
       </Row>
     </Card>
   )

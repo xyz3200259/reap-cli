@@ -2,7 +2,7 @@ package <%=metadata.groupId%>.domain;
 <%if(metadata.entity.fields.find(f=>f.type === 'Date'||f.type==='Timestamp')){%>
 import java.util.Date;<%}%>
 <%if(metadata.entity.fields.find(f=>f.type === 'BigDecimal')){%>
-java.math.BigDecimal;<%}%>
+import java.math.BigDecimal;<%}%>
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +14,7 @@ public class <%=metadata.entity.name.firstUpperCase()%> {
 <% for(var i=0;i<metadata.entity.fields.length;i++){%><% if(metadata.entity.fields[i].primaryKey) {%>
   @Id
 	@GeneratedValue<%}%>
-  private <%=metadata.entity.fields[i].type%> <%=metadata.entity.fields[i].key%>;<%}%>
+  private <%=transformJavaType(metadata.entity.fields[i].type)%> <%=metadata.entity.fields[i].key%>;<%}%>
 
 <% for(var i=0;i<metadata.entity.fields.length;i++){%>
 	public <%=transformJavaType(metadata.entity.fields[i].type)%> get<%=metadata.entity.fields[i].key.firstUpperCase()%>() {

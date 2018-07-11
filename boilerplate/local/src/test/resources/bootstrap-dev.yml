@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: <%=metadata.artifactId%>
+  cloud:
+    config:
+      enabled: false
+    refresh:
+      refreshable: none  
+      
+eureka: 
+  client:
+    enabled: false

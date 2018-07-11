@@ -1,0 +1,14 @@
+spring:  
+  application: 
+    name: <%=metadata.artifactId%>
+  cloud:
+    config: 
+      name: reap,<%=metadata.artifactId%>
+      label: default
+      discovery:
+        serviceId: reap-facility
+        enabled: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REAP_EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}

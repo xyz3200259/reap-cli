@@ -20,7 +20,7 @@ const Component = ({
 
   return (
     <div>
-      <Button type="primary" icon="plus" onClick={() => (dispatch({ type: `${context.code}/setState`, showModal: true }))} >新增</Button>
+      <Button type="primary" icon="plus" style={{ marginBottom: 16 }} onClick={() => (dispatch({ type: `${context.code}/setState`, showModal: true }))} >新增</Button>
       <Modal
         title="创建 <%=metadata.entity.name%>"
         visible={showModal}
