@@ -9,33 +9,26 @@ const formItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 } }<%cons
 const idKey = '<%=idField.key%>'
 
 const Component = ({
-  context, page, dispatch, showModal, loading,
+  page, dispatch, showModal, loading,editRecord
 }) => {
   const { Item } = Form
-  const onCellChange = (key, dataIndex) => {
-    return (value) => {
-      const data = {}
-      data[idKey] = key
-      data[dataIndex] = value
-      dispatch({ context, type: `${context.code}/update`, data })
-    }
-  }
 
   const columns = [<% for(var i=0;i<metadata.entity.fields.length;i++) { if(metadata.entity.fields[i].primaryKey)continue; %>
     {
       title: '<%=metadata.entity.fields[i].name%>',
       dataIndex: '<%=metadata.entity.fields[i].key%>',
-      key: '<%=metadata.entity.fields[i].key%>',<% if(metadata.entity.fields[i].editable){ %>
-      render: (text, record) => (<EditableCell value={text} onChange={onCellChange(record[idKey], '<%=metadata.entity.fields[i].key %>')} />),<%}%>
     },<% }%>
     {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record) => {
         return (
-          <Popconfirm title="确认删除?" onConfirm={() => dispatch({ context, type: `${context.code}/remove`, id: record[idKey] })}>
+          <span>
+          <Popconfirm title="确认删除?" onConfirm={() => dispatch({ type: '<%=metadata._name%>/remove', id: record[idKey] })}>
             <a href="#">删除</a>
           </Popconfirm>
+          <a style={{ marginLeft: 20}} onKeyDown={()=>{}} onClick={() => dispatch({type:'<%=metadata._name%>/setState', showModal: true, editRecord: record})}>编辑</a>
+          </span>
         )
       },
     },
@@ -46,17 +39,17 @@ const Component = ({
       <Row><% for(var i=0;i<metadata.entity.fields.length;i++) {%><% if(metadata.entity.fields[i].searchable) {%>
         <Col md={6}>
           <Item label="<%=metadata.entity.fields[i].name%>" {...formItemLayout}>
-            <Input onChange={e => dispatch({ type: `${context.code}/setState`, search: { <%=metadata.entity.fields[i].key%>: e.target.value } })} />
+            <Input onChange={e => dispatch({ type: '<%=metadata._name%>/setState', search: { <%=metadata.entity.fields[i].key%>: e.target.value } })} />
           </Item>
         </Col><%}%><%}%>
         <Col md={6}>
           <Item {...{ wrapperCol: { span: 16, push: 2 } }}>
-            <Button type="primary" htmlType="button" icon="search" onClick={() => dispatch({ context, type: `${context.code}/search` })} >查询 </Button>
+            <Button type="primary" htmlType="button" icon="search" onClick={() => dispatch({ type: '<%=metadata._name%>/search' })} >查询 </Button>
           </Item>
         </Col>
       </Row>
       <Row>
-        <CreateForm context={context} showModal={showModal} dispatch={dispatch} />
+        <CreateForm editRecord={editRecord} showModal={showModal} dispatch={dispatch} />
       </Row>
       <Row>
       <Table
@@ -66,11 +59,9 @@ const Component = ({
         showTotal: total => `总记录数 ${total} `,
         showSizeChanger: true,
         showQuickJumper: true,
-        onShowSizeChange: (number, size) => (dispatch({
-context, type: `${context.code}/search`, page: number - 1, size,
+        onShowSizeChange: (number, size) => (dispatch({ type: '<%=metadata._name%>/search', page: number - 1, size,
 })),
-        onChange: (number, size) => (dispatch({
-context, type: `${context.code}/search`, page: number - 1, size,
+        onChange: (number, size) => (dispatch({ type: '<%=metadata._name%>/search', page: number - 1, size,
 })),
     }}
       rowKey={idKey}

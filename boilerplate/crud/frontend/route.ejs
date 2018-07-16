@@ -3,11 +3,11 @@ import { Row } from 'antd'
 import List from '../components/<%=metadata.entity.name%>/List'
 
 export default ({
-  context, page, dispatch, effects, showModal,
+  page, dispatch, effects, showModal,editRecord
 }) => {
   return (
     <Row>
-      <List context={context} page={page} dispatch={dispatch} showModal={showModal} loading={effects[`${context.code}/search`]} />
+      <List page={page} editRecord={editRecord} dispatch={dispatch} showModal={showModal} loading={effects['<%=metadata._name%>/search']} />
     </Row>
   )
 }

@@ -23,10 +23,11 @@ export default {
       size: DEFAULT_PAGE_SIZE,
       number: DEFAULT_PAGE_NUMBER,
     },
+    editRecord: null,
   },
   effects: {
-    * search ({ context, page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE }, { call, put, select }) {
-      const state = yield select(rootState => rootState[context.code])
+    * search ({ page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE }, { call, put, select }) {
+      const state = yield select(rootState => rootState['<%=metadata._name%>'])
       const result = yield call(search, { size, page, ...state.search })
       if (result.success) {
         yield put({ type: 'setState', page: result.payload })
@@ -34,33 +35,34 @@ export default {
         error(result)
       }
     },
-    * update ({ context, data }, { call, put, select }) {
-      const state = yield select(rootState => rootState[context.code])
+    * update ({ data }, { call, put, select }) {
+      const state = yield select(rootState => rootState['<%=metadata._name%>'])
       const result = yield call(update, data)
       if (result.success) {
+        yield put({ type: 'setState', showModal: false, editRecord: null })
         yield put({
-          type: 'search', context, ...pageRequest(state),
+          type: 'search', ...pageRequest(state), 
         })
       } else {
         error(result)
       }
     },
-    * remove ({ context, id }, { call, put, select }) {
+    * remove ({ id }, { call, put, select }) {
       const result = yield call(remove, id)
       if (result.success) {
-        const state = yield select(rootState => rootState[context.code])
-        yield put({ type: 'search', context, ...pageRequest(state) })
+        const state = yield select(rootState => rootState['<%=metadata._name%>'])
+        yield put({ type: 'search', ...pageRequest(state) })
       } else {
         error(result)
       }
     },
-    * create ({ context, data, form }, { call, select, put }) {
-      const state = yield select(rootState => rootState[context.code])
+    * create ({ data, form }, { call, select, put }) {
+      const state = yield select(rootState => rootState['<%=metadata._name%>'])
       const result = yield call(create, data)
       if (result.success) {
         form.resetFields()
-        yield put({ type: 'setState', showModal: false })
-        yield put({ type: 'search', context, ...pageRequest(state) })
+        yield put({ type: 'setState', showModal: false, editRecord: null })
+        yield put({ type: 'search', ...pageRequest(state) })
       } else {
         error(result)
       }
@@ -79,11 +81,11 @@ export default {
     },
   },
   subscriptions: {
-    setup ({ context, dispatch, history }) {
+    setup ({funcCode, dispatch, history }) {
       history.listen((location) => {
-        if (location.pathname === `/${context.code}`) {
+        if (location.pathname === `/${funcCode}`) {
           dispatch({
-            type: 'search', context, page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE,
+            type: 'search', page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE,
           })
         }
       })

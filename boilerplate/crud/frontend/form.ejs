@@ -14,36 +14,37 @@ const formItemLayout = {
 }
 
 const Component = ({
-  context, form, dispatch, showModal,
+   form, dispatch, showModal,editRecord
 }) => {
   const { getFieldDecorator } = form
 
   return (
     <div>
-      <Button type="primary" icon="plus" style={{ marginBottom: 16 }} onClick={() => (dispatch({ type: `${context.code}/setState`, showModal: true }))} >新增</Button>
+      <Button type="primary" icon="plus" style={{ marginBottom: 16 }} onClick={() => (dispatch({ type: '<%=metadata._name%>/setState', showModal: true }))} >新增</Button>
       <Modal
-        title="创建 <%=metadata.entity.name%>"
+        title={ editRecord ? "创建 <%=metadata.entity.name%>" : "编辑 <%=metadata.entity.name%>" }
         visible={showModal}
         onOk={() => {
           form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-              dispatch({
- context, type: `${context.code}/create`, data: values, form,
-})
+              if(editRecord){
+                values.id = editRecord.id
+              }
+              dispatch({ type: '<%=metadata._name%>/create', data: values, form,})
             }
           })
         }}
         onCancel={() => {
-          dispatch({ context, type: `${context.code}/setState`, showModal: false })
+          dispatch({ type: '<%=metadata._name%>/setState', showModal: false , editRecord: null })
           form.resetFields()
         }}
       >
         <Form><% for(var i=0; i<metadata.entity.fields.length; i++) {%><%if(metadata.entity.fields[i].primaryKey){continue;}%>
           <FormItem {...formItemLayout} label="<%=metadata.entity.fields[i].name%>" ><% if(metadata.entity.fields[i].required) {%><% if(metadata.entity.fields[i].type === 'Date'|| metadata.entity.fields[i].type === 'Timestamp')  {%>
-            {getFieldDecorator('<%=metadata.entity.fields[i].key%>', { rules: [{ required: true, message: '请输入<%=metadata.entity.fields[i].name%>' }] })(<DatePicker />)}<%} else {%>
-            {getFieldDecorator('<%=metadata.entity.fields[i].key%>', { rules: [{ required: true, message: '请输入<%=metadata.entity.fields[i].name%>' }] })(<Input />)}<%}%><%} else {%><% if(metadata.entity.fields[i].type === 'Date'|| metadata.entity.fields[i].type === 'Timestamp') {%>
-            {getFieldDecorator('<%=metadata.entity.fields[i].key%>')(<DatePicker />)}<%} else {%>
-            {getFieldDecorator('<%=metadata.entity.fields[i].key%>')(<Input />)}<%}%><%}%>          
+            {getFieldDecorator('<%=metadata.entity.fields[i].key%>', { initialValue: editRecord && editRecord['<%=metadata.entity.fields[i].key%>'], rules: [{ required: true, message: '请输入<%=metadata.entity.fields[i].name%>' }] })(<DatePicker />)}<%} else {%>
+            {getFieldDecorator('<%=metadata.entity.fields[i].key%>', { initialValue: editRecord && editRecord['<%=metadata.entity.fields[i].key%>'], rules: [{ required: true, message: '请输入<%=metadata.entity.fields[i].name%>' }] })(<Input />)}<%}%><%} else {%><% if(metadata.entity.fields[i].type === 'Date'|| metadata.entity.fields[i].type === 'Timestamp') {%>
+            {getFieldDecorator('<%=metadata.entity.fields[i].key%>',{initialValue: editRecord && editRecord['<%=metadata.entity.fields[i].key%>'] })(<DatePicker />)}<%} else {%>
+            {getFieldDecorator('<%=metadata.entity.fields[i].key%>',{initialValue: editRecord && editRecord['<%=metadata.entity.fields[i].key%>'], })(<Input />)}<%}%><%}%>          
           </FormItem><% }%>
         </Form>
       </Modal>
