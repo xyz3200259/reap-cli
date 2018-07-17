@@ -22,7 +22,7 @@ const Component = ({
     <div>
       <Button type="primary" icon="plus" style={{ marginBottom: 16 }} onClick={() => (dispatch({ type: '<%=metadata._name%>/setState', showModal: true }))} >新增</Button>
       <Modal
-        title={ editRecord ? "创建 <%=metadata.entity.name%>" : "编辑 <%=metadata.entity.name%>" }
+        title={ editRecord ? "编辑 <%=metadata.entity.name%>" : "创建 <%=metadata.entity.name%>" }
         visible={showModal}
         onOk={() => {
           form.validateFieldsAndScroll((err, values) => {
