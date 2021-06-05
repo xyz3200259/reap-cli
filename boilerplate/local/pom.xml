@@ -10,6 +10,16 @@
 	<groupId><%=metadata.groupId%></groupId>
 	<artifactId><%=metadata.artifactId%></artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+	<repositories>
+		<repository>
+			<id>maven-repo-dev</id>
+			<url>https://raw.github.com/xyz3200259/mvn-repo/dev/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 	<profiles>
 		<profile>
 			<id>Windows</id>
